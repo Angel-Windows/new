@@ -1,0 +1,168 @@
+<?php $__env->startSection('main'); ?>
+
+	<div class="breadCrumbBg contacts">
+		<div class="container">
+			<div class="row">
+				<ul class="breadCrumbs col-xs-12">
+					<li><a href="/">Главная</a></li>
+					<li><a href="/<?php echo e($page->slug); ?>"><?php echo e($page->name); ?></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container">
+		<div class="row">
+		<div class="pers_area col-xs-12">
+
+			<?php if(Auth::check()): ?>
+					<div class="user_info fleft">
+						<table>
+
+							<?php if( $user->firstName ): ?>
+								<tr>
+									<td>Имя</td>
+									<td><?php echo e($user->firstName); ?></td>
+								</tr>
+							<?php endif; ?>
+
+							<?php if( $user->lastName ): ?>
+								<tr>
+									<td>Фамилия</td>
+									<td><?php echo e($user->lastName); ?></td>
+								</tr>
+							<?php endif; ?>
+
+							<?php if( $user->middleName ): ?>
+								<tr>
+									<td>Отчество</td>
+									<td><?php echo e($user->middleName); ?></td>
+								</tr>
+							<?php endif; ?>
+
+
+
+
+							<tr>
+								<td>Электронная почта</td>
+								<td><?php echo e($user->email); ?></td>
+							</tr>
+							<?php if( $user->phone ): ?>
+								<tr>
+									<td>Телефон</td>
+									<td><?php echo e($user->phone); ?></td>
+								</tr>
+							<?php endif; ?>
+							<?php if( count( $orders ) ): ?>
+								<tr>
+									<td>Накопленная сумма</td>
+									<td><?php echo e($total_ordered); ?> грн <?php if($total_ordered < $settings->sum): ?> <i style="font-size: 13px;">(нужно еще купить товаров на <b style="font-weight: bold"><?php echo e($settings->sum - $total_ordered); ?></b> грн для скидки в <b style="font-weight: bold"><?php echo e($settings->discount); ?></b> %) </i> <?php endif; ?> </td>
+								</tr>
+							<?php endif; ?>
+							<?php if( $total_ordered >= $settings->sum ): ?>
+								<tr>
+									<td>Ваша скидка</td>
+									<td><?php echo e($settings->discount); ?> %</td>
+								</tr>
+							<?php endif; ?>
+						</table>
+					</div>
+					<div class="relativeBlock">
+							<!-- user_info end -->
+							<div class="right_section fright">
+								<a href="/edit-info">Редактировать личные данные</a>
+								<a href="/logout">Выйти</a>
+							</div>
+							<div class="notification">
+								<a href="/notifications">Напоминание о замене линз</a>
+								<a href="/service">Сервисная заявка</a>
+							</div>
+					</div>
+				<!-- fright end -->
+				</div>
+				<!-- clearfix end -->
+				<?php if( count( $orders ) ): ?>
+				<table class="ordered_pr">
+					<tr>
+						<td class="hidden-xs">Номер заказа</td>
+						<td>Дата заказа</td>
+						<td>Заказанные товары</td>
+						<td>Информация о заказе</td>
+						<td class="hidden-xs">Статус заказа</td>
+					</tr>
+					<?php foreach( $orders as $order ): ?>
+						<tr>
+							<td class="hidden-xs">№ <?php echo e($order->id); ?></td>
+							<td><?php echo e($order->created_at->format('d.m.Y h:i')); ?></td>
+							<td>
+								<?php foreach( $order->orderedproducts as $op ): ?>
+
+
+									<?php if( $op->product_type != 5 ): ?>
+										<a href="/product/<?php echo e($op->slug); ?>" target="_blank">
+											<img src="<?php if( $img = unserialize($op->imgs)[$op->main_img] ): ?> /uploads/products/sm/<?php echo e($img); ?> <?php else: ?> /uploads/products/sm/no_image.png <?php endif; ?>" alt="<?php echo e($op->product_name); ?>">
+										</a>
+									<?php endif; ?>
+								<?php endforeach; ?>
+								<!--  -->
+							</td>
+							<td><?php echo e(count($order->orderedproducts)); ?> <?php echo e(Lang::choice('товар|товара|товаров', count($order->orderedproducts), array(), 'ru')); ?> на <?php echo e($order->total_cost); ?> грн</td>
+							<td class="hidden-xs">
+								<?php if( $order->status == 0 ): ?>
+									<span class="red">Новый</span>
+								<?php elseif( $order->status == 1 ): ?>
+									<span class="brown">В обработке</span>
+								<?php else: ?>
+									<span class="green">Выполнен</span>
+								<?php endif; ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+				<?php endif; ?>
+			<?php else: ?>
+				<?php if( Session::has('error') || $errors->any() ): ?>
+					<?php foreach( $errors->all() as $error ): ?>
+						<li><?php echo e($error); ?>
+
+					<?php endforeach; ?>
+				<?php endif; ?>
+
+			<?php endif; ?>
+	</div>
+	</div>
+	<!-- wrapper end -->
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+<script>
+
+	var status = 1;
+	$('.toggle').click(function(){
+		if( status == 1 ){
+			$(this).text('Войти');
+			$('#login_form').hide(300);
+			$('#reg_form').show(300);
+			status = 0;
+		}
+		else{
+			$(this).text('Зарегистрироваться');
+			$('#reg_form').hide(300);
+			$('#login_form').show(300);
+			status = 1;
+		}
+		return false;
+	});
+
+
+</script>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('styles'); ?>
+	<link rel="stylesheet" href="/frontend/css/contacts.css">
+	<link rel="stylesheet" href="/frontend/css/user.css">
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

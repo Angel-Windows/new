@@ -1,0 +1,14 @@
+<div class="charList">
+    <?php $count = 0; ?>
+
+    <?php foreach(unserialize($prod->specification) as $dtbl): ?>
+        <?php if($count++ > 2): ?>
+                <?php break; ?>
+        <?php endif; ?>
+        <div class="item">
+            <div class="name"><?php echo e($dtbl['name']); ?></div>
+            <div class="value"><?php echo e($dtbl['value']); ?></div>
+            <?php /*																<?php echo e($dtbl->nameOptionVariant()); ?>*/ ?>
+        </div>
+    <?php endforeach; ?>
+</div>

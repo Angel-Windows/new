@@ -1,0 +1,87 @@
+<?php $__env->startSection('main'); ?>
+
+    <div class="breadCrumbBg contacts">
+        <div class="container">
+            <div class="row">
+                <ul class="breadCrumbs col-xs-12">
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="/<?php echo e($page->slug); ?>"><?php echo e($page->name); ?></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="pers_area not col-xs-12">
+                <div class="row">
+
+                    <?php if(Auth::check()): ?>
+                        <form action="/service" method="post" class="notificationForm col-lg-4" enctype="multipart/form-data">
+                            <?php echo csrf_field(); ?>
+
+                            <div class="formRow">
+                                <label for="title"> Тема заявки </label><br>
+                                <input type="text" name="title" id="title" required>
+                            </div>
+
+                            <div class="formRow">
+                                <label for="text"> Текст заявки</label><br>
+                                <textarea name="text" id="text" placeholder="Текст заявки" required></textarea>
+                            </div>
+
+                            <div class="formRow">
+                                <label for="filestyle"> Изображения, видео</label><br>
+                                <input class="filestyle" data-value="" data-buttontext="Выбрать файлы" data-buttonname="btn-primary" data-icon="false" multiple="true" name="file[]" type="file" id="filestyle">
+                            </div>
+
+                            <input type="submit" value="Создать">
+                        </form>
+
+
+                        <div class="title col-xs-12">Существующие заявки</div>
+
+
+                        <div class="notList col-xs-12">
+
+                            <?php if(count($service) > 0): ?>
+                                <table>
+                                    <tr class="thead">
+                                        <th>Дата</th>
+                                        <th>Тема</th>
+                                        <th></th>
+                                    </tr>
+
+                                    <?php foreach($service as $item): ?>
+                                        <tr class="tbody">
+                                            <td><?php echo e($item->created_at); ?></td>
+                                            <td><?php echo e($item->title); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+
+                                </table>
+                            <?php else: ?>
+                                Пусто
+                            <?php endif; ?>
+                        </div>
+
+
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <!-- wrapper end -->
+
+        <?php $__env->stopSection(); ?>
+
+        <?php $__env->startSection('scripts'); ?>
+
+        <?php $__env->stopSection(); ?>
+
+        <?php $__env->startSection('styles'); ?>
+            <link rel="stylesheet" href="/frontend/css/contacts.css">
+            <link rel="stylesheet" href="/frontend/css/user.css">
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

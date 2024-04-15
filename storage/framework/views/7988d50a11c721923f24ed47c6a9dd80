@@ -1,0 +1,102 @@
+<?php $__env->startSection('main'); ?>
+
+    <h1><a href="/master/features" class="glyphicon glyphicon-circle-arrow-left"></a><?php echo e($title); ?></h1>
+
+    <?php if(Session::has('message')): ?>
+        <div class="alert alert-success" role="alert"><?php echo e(Session::get('message')); ?></div>
+    <?php endif; ?>
+
+    <?php echo Form::open(['class' => 'features_add', 'action' => 'Admin\AdminOptionVariantsController@postAdd' ]); ?>
+
+    <?php echo Form::hidden('feature_id', $id); ?>
+
+    <?php foreach(config('translatable.locales') as $locale): ?>
+
+        <div class="col-sm-8">
+<?php /*            <?php echo Form::text('name', '', array('class'=>'form-control', 'placeholder' => 'Введите название параметра') ); ?>*/ ?>
+            <input type="text" class="form-control" id=""
+                   name="<?php echo e($locale); ?>[name]"
+                   value=""
+                   placeholder="Введите название параметра-<?php echo e($locale); ?>"
+                   >
+        </div>
+    <?php endforeach; ?>
+    <div class="col-sm-2"><?php echo Form::submit('Добавить', ['class' => 'btn btn-success']); ?></div>
+    <?php echo Form::close(); ?>
+
+
+
+    <?php if( count($options)>0 ): ?>
+        <?php echo Form::open(['class'=>'features']); ?>
+
+        <table class="table">
+            <tr>
+                <th style="width: 50%;">Название</th>
+                <th style="text-align: right;">Управление</th>
+            </tr>
+            <?php foreach($options as $post): ?>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <input name="check[]" value="<?php echo e($post->id); ?>" type="checkbox"><?php echo e($post->name); ?><br>
+                        <small style="padding-left: 22px;"><?php echo e($post->created_at); ?></small>
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="btn-group">
+                            <a title="Редактировать" href="/master/option_variants/edit/<?php echo e($post->id); ?>"
+                               class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span></a>
+                            <button title="Удалить" type="button" class="delete btn btn-danger"
+                                    data-id="<?php echo e($post->id); ?>"><span class="glyphicon glyphicon-remove"></span></button>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+
+        <div class="select_form">
+            <label id="check_all" class="link">Выбрать все</label>
+            <select name="action" class="form-control">
+                <option value="delete">удалить</option>
+            </select>
+            <button type="submit" style="margin-left: 20px;" class="btn btn-success">Применить</button>
+        </div>
+        <?php echo Form::close(); ?>
+
+
+        <!-- navigation //-->
+        <?php echo $options->render(); ?>
+
+
+    <?php else: ?>
+        <div class="alert alert-warning" role="alert">
+            Нет записей
+        </div>
+    <?php endif; ?>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+    <script>
+        $(function () {
+
+            // удаление записи
+            $('.delete').click(function () {
+                $('input[type="checkbox"][name*="check"]').prop('checked', false);
+                $(this).closest("tr").find('input[type="checkbox"][name*="check"]').prop('checked', true);
+                $(this).closest("form").find('select[name="action"] option[value=delete]').prop('selected', true);
+                $(this).closest("form").submit();
+            })
+
+            // удаление записей
+            $("form.features").submit(function () {
+                if ($('select[name="action"]').val() == 'delete' && !confirm('Подтвердите удаление'))
+                    return false;
+            });
+
+            // выделить все
+            $("#check_all").on('click', function () {
+                $('input[type="checkbox"][name*="check"]').prop('checked', $('input[type="checkbox"][name*="check"]:not(:checked)').length > 0);
+            });
+        })
+    </script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

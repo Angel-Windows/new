@@ -1,0 +1,104 @@
+<?php $__env->startSection('main'); ?>
+
+    <div class="breadCrumbBg contacts">
+        <div class="container">
+            <div class="row">
+                <ul class="breadCrumbs col-xs-12">
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="/<?php echo e($page->slug); ?>"><?php echo e($page->name); ?></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="pers_area not col-xs-12">
+                <div class="row">
+
+                <?php if(Auth::check()): ?>
+                    <form action="/notifications" method="post" class="notificationForm col-lg-4">
+                        <?php echo csrf_field(); ?>
+
+                            <div class="formRow">
+                                <label for="date"> Дата получения линз </label><br>
+                                <input type="date" name="delivery_date" id="date" required>
+                            </div>
+
+                            <div class="formRow">
+                                <input name="repeat" type="checkbox" id="repeat">
+                                <label class="repeat" for="repeat"> Повторять напоминание </label>
+                            </div>
+
+                            <div class="formRow">
+                                <label for="interval"> Интервал дней между напоминаниями(дней)</label><br>
+                                <input type="number" min="1" name="interval" id="interval" placeholder="Интервал дней между напоминаниями" required>
+                            </div>
+
+                            <input type="submit" value="Создать напоминание">
+                    </form>
+
+                    <div class="title col-xs-12">Существующие напоминания</div>
+
+
+                    <div class="notList col-xs-12">
+
+                        <?php if(count($notification) > 0): ?>
+                            <table>
+                                <tr class="thead">
+                                    <th>Дата напоминания</th>
+                                    <th class="hidden-xs">Повторяемое</th>
+                                    <th>Повторять через</th>
+                                    <th></th>
+                                </tr>
+
+                                <?php foreach($notification as $item): ?>
+                                    <? $delivery_date = explode(' ', $item->delivery_date); ?>
+
+                                    <tr class="tbody">
+                                        <td><?php echo e($delivery_date[0]); ?></td>
+                                        <td class="hidden-xs"><?php echo e($item->repeat == 1 ? 'Да' : 'Нет'); ?></td>
+                                        <td>Через каждые <?php echo e($item->interval); ?> дней</td>
+                                        <td><div data-id="<?php echo e($item->id); ?>" class="del"></div></td>
+                                    </tr>
+                               <?php endforeach; ?>
+
+                            </table>
+                        <?php else: ?>
+                            Пусто
+                        <?php endif; ?>
+                    </div>
+
+                <?php endif; ?>
+                </div>
+        </div>
+    </div>
+    <!-- wrapper end -->
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+    <script>
+
+        $('.del').click(function(){
+            var pointer = $(this);
+            var id = pointer.data('id');
+            $.post( '/notifications', { _token: '<?php echo e(Session::token()); ?>', id: id },
+                function (data) {
+                    pointer.parent().parent('.tbody').fadeOut(function () {
+                       $(this).remove();
+                    });
+                });
+        });
+
+
+    </script>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('styles'); ?>
+    <link rel="stylesheet" href="/frontend/css/contacts.css">
+    <link rel="stylesheet" href="/frontend/css/user.css">
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,0 +1,33 @@
+<?php $__env->startSection('main'); ?>
+
+	<h1><a href="/master/option_variants/show/<?php echo e($post->feature_id); ?>" class="glyphicon glyphicon-circle-arrow-left"></a><?php echo e($title); ?></h1><br>
+
+	<?php if(Session::has('message')): ?>
+		<div class="alert alert-success" role="alert"><?php echo e(Session::get('message')); ?></div>
+	<?php endif; ?>
+
+	<?php echo $__env->make('errors.formErrors', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+	<?php echo Form::model( $post, array( 'class' => 'form-horizontal', 'role' => 'form', 'files' => true) ); ?>
+
+
+	<div class="form-group">
+		<?php echo Form::label('name', 'Название', array('class'=>'col-sm-2 control-label') ); ?>
+
+		<div class="col-sm-10">
+			<?php echo Form::text('name',  $post->name, array('class'=>'form-control') ); ?>
+
+		</div>
+	</div>
+
+	  <div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+		  <button type="submit" class="btn btn-success">Сохранить</button>
+		</div>
+	  </div>
+
+
+	<?php echo Form::close(); ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

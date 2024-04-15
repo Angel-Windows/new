@@ -1,0 +1,81 @@
+<?php $__env->startSection('main'); ?>
+	<div class="breadCrumbBg contacts">
+		<div class="container">
+			<div class="row">
+				<ul class="breadCrumbs col-xs-12">
+					<li><a href="/">Главная</a></li>
+					<li><a href="/<?php echo e($page->slug); ?>"><?php echo e($page->name); ?></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container">
+		<div class="row">
+
+		<div class="pers_area col-xs-12">
+
+			<form method="POST" action="/edit-info">
+				<?php echo csrf_field(); ?>
+
+
+				<div class="form_group">
+					<label for="firstName"></label>
+					<input type="text" value="<?php echo e($user->firstName); ?>" name="firstName" id="firstName" placeholder="Введите Ваше Имя">
+				</div>
+
+
+				<div class="form_group">
+					<label for="lastName"></label>
+					<input type="text" value="<?php echo e($user->lastName); ?>" name="lastName" id="lastName" placeholder="Введите Вашу Фамилию">
+				</div>
+
+
+				<div class="form_group">
+					<label for="middleName"></label>
+					<input type="text" value="<?php echo e($user->middleName); ?>" name="middleName" id="middleName" placeholder="Введите Ваше Отчество">
+				</div>
+
+				<div class="form_group">
+					<label for="city"></label>
+					<input type="text" value="<?php echo e($user->city); ?>" name="city" id="city" placeholder="Введите Ваше Город">
+				</div>
+
+				<div class="form_group">
+					<label for="address"></label>
+					<input type="text" value="<?php echo e($user->address); ?>" name="address" id="address" placeholder="Введите Ваш Адрес">
+				</div>
+
+
+
+
+
+				<div class="form_group">
+					<label for="email" class="subscr_email"></label>
+					<input type="text" value="<?php echo e($user->email); ?>" name="email" id="email" placeholder="Введите Ваш email">
+				</div>
+
+				<div class="form_group">
+					<label for="phone" class="subscr_phone"></label>
+					<input type="text" value="<?php echo e($user->phone); ?>" name="phone" id="phone" placeholder="Введите Ваш телефон">
+				</div>
+
+				<div class="form_group">
+					<label for="password" class="password"></label>
+					<input type="text" name="password" id="password" placeholder="Новый пароль">
+				</div>
+				<input type="submit" value="Изменить">
+			</form>
+		</div>
+	</div>
+</div>
+	<!-- wrapper end -->
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('styles'); ?>
+	<link rel="stylesheet" href="/frontend/css/contacts.css">
+	<link rel="stylesheet" href="/frontend/css/user.css">
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

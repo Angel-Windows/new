@@ -1,0 +1,51 @@
+<?php $__env->startSection('main'); ?>
+
+    <div class="breadCrumbBg cart">
+        <div class="container">
+            <div class="row">
+                <ul class="breadCrumbs col-xs-12">
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="/cart">Корзина товаров</a></li>
+<?php /*                    <li><a href="/<?php echo e($page->slug); ?>"><?php echo e($page->name); ?></a></li>*/ ?>
+                </ul>
+                <div class="step col-xs-12">
+                    <div class="item cart hidden-xs"><span>Корзина товаров</span></div>
+                    <div class="item order active"><span>Оформление заказа</span></div>
+                    <div class="item confirm hidden-xs"><span>Подтверджение заказа</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="cartBg cartTwo">
+        <div class="container">
+            <div class="row">
+                <div class="tabs">
+                    <?php echo $form['form']; ?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('styles'); ?>
+    <link rel="stylesheet" href="/frontend/css/cart.css">	<link rel="stylesheet" href="/frontend/js/formStyler/jquery.formstyler.css">
+    <link rel="stylesheet" href="/frontend/js/formStyler/jquery.formstyler.theme.css">
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+    <!--formStyler-->
+    <script type="text/javascript" src="/frontend/js/formStyler/jquery.formstyler.min.js"></script>
+    <script type="text/javascript" src="/frontend/js/cart.js"></script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

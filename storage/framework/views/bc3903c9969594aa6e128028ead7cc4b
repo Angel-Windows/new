@@ -1,0 +1,65 @@
+<?php $__env->startSection('main'); ?>
+
+    <div class="breadCrumbBg contacts">
+        <div class="container">
+            <div class="row">
+                <ul class="breadCrumbs col-xs-12">
+                    <li><a href="/"><?php echo e(trans('cosmetics.main')); ?></a></li>
+                    <li><a href="/reg"><?php echo e(trans('cosmetics.cabinet.registered')); ?></a></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+<div class="cartBg cartTwo">
+    <div class="container">
+        <div class="row">
+            <div class="tabs">
+                <div class="tabsContent col-xs-12">
+                    <div class="item row">
+                        <form action="/register" method="post" class="login col-xs-12 register">
+                            <?php echo csrf_field(); ?>
+
+                            <div class="email row">
+                                <label class="col-lg-2 col-sm-3 col-md-3 col-xs-12" for="emailText">E-mail</label>
+                                <input class="col-lg-3 col-sm-6 col-md-6 col-xs-12" type="text" name="email" id="emailText" placeholder="konstantin.konstantionovsky@gmail.com" required>
+                            </div>
+
+                            <div class="password row">
+                                <label class="col-lg-2 col-sm-3 col-md-3 col-xs-12" for="passwordText"><?php echo e(trans('cosmetics.cabinet.password')); ?></label>
+                                <input class="col-lg-3 col-sm-6 col-md-6 col-xs-12" type="password" name="password" id="passwordText" placeholder="<?php echo e(trans('cosmetics.cabinet.password')); ?>" required>
+                            </div>
+
+                            <div class="password row">
+                                <label class="col-lg-2 col-sm-3 col-md-3 col-xs-12" for="firstName"><?php echo e(trans('cosmetics.name')); ?></label>
+                                <input class="col-lg-3 col-sm-6 col-md-6 col-xs-12" type="text" name="firstName" id="firstName" placeholder="<?php echo e(trans('cosmetics.name')); ?>" required>
+                            </div>
+
+                            <div class="password row">
+                                <label class="col-lg-2 col-sm-3 col-md-3 col-xs-12" for="phone"><?php echo e(trans('cosmetics.phone')); ?></label>
+                                <input class="col-lg-3 col-sm-6 col-md-6 col-xs-12" type="text" name="phone" id="phone" placeholder="<?php echo e(trans('cosmetics.phone')); ?>" required>
+                            </div>
+
+                            <div class="row">
+                                <div class="loginSubmit col-lg-5 col-sm-9 col-md-9 col-xs-12">
+                                    <input type="submit" value="<?php echo e(trans('cosmetics.registration')); ?>">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('styles'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/css/cart.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/css/contacts.css')); ?>">
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('frontend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
